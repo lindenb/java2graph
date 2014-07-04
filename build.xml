@@ -1,0 +1,33 @@
+<project default="java2graph">
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: java2graph                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="java2graph">
+		<mkdir dir="tmp"/>
+		<mkdir dir="dist"/>
+		<javac destdir="tmp" includeantruntime="false" debug="true">
+			<src path="src/main/java"/>
+			<include name="**/Java2Graph.java" />
+		</javac>
+		<jar destfile="dist/java2graph.jar" basedir="tmp">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="sandbox.MysqlDumpVelocity"/>
+				<attribute name="Class-Path" value="com.github.lindenb.java2graph.Java2Graph"/>
+			</manifest>
+		</jar>
+	   	<echo file="dist/java2graph">#!/bin/bash
+PREFIX=$(dirname $0)
+java  -cp $PREFIX/java2graph.jar com.github.lindenb.java2graph.Java2Graph $*
+</echo>
+	   
+	   <chmod file="dist/java2graph" perm="ugo+rx"/>
+
+		<delete dir="tmp"/>
+				
+
+	</target>
+
+
+</project>
